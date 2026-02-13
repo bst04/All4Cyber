@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#050508">
+  <title>All4Cyber – Comunidad Hispana de Ciberseguridad</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       ALL4CYBER – Landing Ciberseguridad
+       Dark mode · Verde neón · Estética tech
+       ============================================ */
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #050508;
+      --bg-card: #0c0e14;
+      --bg-hover: #11141c;
+      --neon: #00ff88;
+      --neon-dim: #00cc6a;
+      --glow: rgba(0, 255, 136, 0.4);
+      --text: #eef0f4;
+      --muted: #7d8696;
+      --border: #1a1f2e;
+      --radius: 14px;
+      --font: 'Space Grotesk', sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ---------- Fondo partículas / matrix ---------- */
+    #canvas-bg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      opacity: 0.25;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 1;
+      background: radial-gradient(ellipse 80% 50% at 50% -20%, var(--glow), transparent 50%),
+                  linear-gradient(180deg, transparent 0%, var(--bg) 35%);
+      pointer-events: none;
+    }
+
+    .wrap { position: relative; z-index: 2; }
+
+    /* ---------- Header ---------- */
+    header {
+      padding: 1.2rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      border-bottom: 1px solid var(--border);
+      background: rgba(5, 5, 8, 0.9);
+      backdrop-filter: blur(16px);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .logo {
+      font-family: var(--mono);
+      font-weight: 700;
+      font-size: 1.4rem;
+      letter-spacing: 0.1em;
+      color: var(--neon);
+      text-decoration: none;
+      text-shadow: 0 0 24px var(--glow);
+      transition: text-shadow 0.3s var(--ease);
+    }
+
+    .logo:hover { text-shadow: 0 0 36px var(--glow); }
+
+    .logo span { color: var(--text); }
+
+    nav { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color 0.2s;
+    }
+
+    nav a:hover { color: var(--neon); }
+
+    /* ---------- 1. HERO / PORTADA ---------- */
+    .hero {
+      min-height: 88vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.75rem, 9vw, 5rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.75rem;
+      background: linear-gradient(135deg, var(--neon), #a8ffd4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 40px var(--glow));
+    }
+
+    .hero .subtitle {
+      font-size: clamp(1.05rem, 2.5vw, 1.35rem);
+      color: var(--neon);
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 20px var(--glow);
+    }
+
+    .hero .desc {
+      color: var(--muted);
+      max-width: 520px;
+      margin-bottom: 2rem;
+      font-size: 1.05rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem 2rem;
+      font-family: var(--font);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--bg);
+      background: var(--neon);
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.3s, box-shadow 0.3s, transform 0.2s var(--ease);
+      box-shadow: 0 0 28px var(--glow);
+    }
+
+    .btn:hover {
+      background: var(--neon-dim);
+      box-shadow: 0 0 45px var(--glow);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--neon);
+      border: 2px solid var(--neon);
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.15);
+    }
+
+    .btn-outline:hover {
+      background: rgba(0, 255, 136, 0.1);
+      box-shadow: 0 0 30px var(--glow);
+    }
+
+    /* ---------- Secciones genéricas ---------- */
+    section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+    }
+
+    .sec-title {
+      font-size: clamp(1.75rem, 4vw, 2.25rem);
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+
+    .sec-title .g { color: var(--neon); }
+
+    .sec-lead { color: var(--muted); margin-bottom: 2rem; font-size: 1rem; }
+
+    /* ---------- 2. ¿QUÉ ES ALL4CYBER? ---------- */
+    .about {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, transparent, rgba(0, 255, 136, 0.03), transparent);
+    }
+
+    .about-content {
+      max-width: 680px;
+      font-size: 1.1rem;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .about-content strong { color: var(--neon); }
+
+    /* ---------- 3. ÚNETE A LA COMUNIDAD ---------- */
+    .join {
+      text-align: center;
+      padding: 5rem 2rem;
+    }
+
+    .join .sec-title { margin-bottom: 1rem; }
+
+    .join .sec-lead { margin-bottom: 2rem; }
+
+    .join .btn { font-size: 1.15rem; padding: 1.15rem 2.5rem; }
+
+    /* ---------- 4. CHARLAS Y EVENTOS ---------- */
+    .charlas-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .charla-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s var(--ease);
+    }
+
+    .charla-card:hover {
+      border-color: var(--neon);
+      box-shadow: 0 0 35px var(--glow);
+      transform: translateY(-4px);
+    }
+
+    .charla-thumb-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+      overflow: hidden;
+      background: linear-gradient(135deg, var(--bg-hover) 0%, var(--border) 100%);
+    }
+
+    /* Portada: overlay para que la imagen se vea como cover */
+    .charla-thumb-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 40%, rgba(5, 5, 8, 0.85) 100%);
+      pointer-events: none;
+    }
+
+    .charla-thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s var(--ease);
+      display: block;
+    }
+
+    .charla-card:hover .charla-thumb { transform: scale(1.05); }
+
+    .charla-play {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: rgba(0, 255, 136, 0.9);
+      color: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 30px var(--glow);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .charla-play svg { width: 24px; height: 24px; margin-left: 4px; }
+
+    .charla-body { padding: 1.25rem; }
+
+    .charla-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+
+    .charla-desc {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+
+    .charla-card .btn { width: 100%; justify-content: center; font-size: 0.9rem; padding: 0.75rem; }
+
+    /* ---------- Modal vídeo ---------- */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+
+    .modal.on { opacity: 1; visibility: visible; }
+
+    .modal-box {
+      position: relative;
+      width: 100%;
+      max-width: 900px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 0 0 1px var(--border), 0 0 60px var(--glow);
+      transform: scale(0.96);
+      transition: transform 0.3s var(--ease);
+    }
+
+    .modal.on .modal-box { transform: scale(1); }
+
+    .modal-box video { width: 100%; display: block; background: #000; }
+
+    .modal-close {
+      position: absolute;
+      top: -46px;
+      right: 0;
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 10px;
+      background: var(--bg-card);
+      color: var(--muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s, background 0.2s;
+    }
+
+    .modal-close:hover { color: var(--neon); background: var(--bg-hover); }
+
+    .modal-close svg { width: 20px; height: 20px; }
+
+    /* ---------- 5. FOOTER ---------- */
+    footer {
+      text-align: center;
+      padding: 3rem 2rem;
+      border-top: 1px solid var(--border);
+      background: rgba(5, 5, 8, 0.6);
+    }
+
+    .footer-text {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-icons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-icons a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      transition: color 0.3s, border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .footer-icons a:hover {
+      color: var(--neon);
+      border-color: var(--neon);
+      box-shadow: 0 0 20px var(--glow);
+    }
+
+    .footer-icons svg { width: 20px; height: 20px; }
+
+    /* ---------- Reveal al scroll ---------- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+    }
+
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ---------- Responsive: móviles y tablets ---------- */
+    @media (max-width: 768px) {
+      body { padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); }
+
+      header {
+        padding: 1rem 1.25rem;
+        padding-left: max(1.25rem, env(safe-area-inset-left));
+        padding-right: max(1.25rem, env(safe-area-inset-right));
+      }
+
+      .logo { font-size: 1.25rem; }
+
+      nav { gap: 0.75rem; }
+      nav a { padding: 0.5rem 0.75rem; min-height: 44px; display: inline-flex; align-items: center; }
+
+      .hero {
+        padding: 3rem 1.25rem 3.5rem;
+        min-height: 85vh;
+        min-height: 85dvh;
+      }
+
+      .hero h1 { font-size: clamp(2.25rem, 10vw, 3.5rem); }
+      .hero .subtitle { font-size: clamp(1rem, 4vw, 1.2rem); }
+      .hero .desc { font-size: 1rem; padding: 0 0.5rem; }
+      .hero .btn { width: 100%; max-width: 320px; min-height: 48px; }
+
+      section {
+        padding: 2.75rem 1.25rem;
+        padding-left: max(1.25rem, env(safe-area-inset-left));
+        padding-right: max(1.25rem, env(safe-area-inset-right));
+      }
+
+      .sec-title { font-size: clamp(1.5rem, 5vw, 1.9rem); }
+      .sec-lead { margin-bottom: 1.5rem; }
+
+      /* Charlas: una columna, cards full width, portadas bien visibles */
+      .charlas-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin-left: -0.25rem;
+        margin-right: -0.25rem;
+        max-width: 100vw;
+        box-sizing: border-box;
+      }
+
+      .charla-card {
+        margin: 0;
+        border-radius: 12px;
+      }
+
+      .charla-thumb-wrap { aspect-ratio: 16/9; }
+      .charla-play { width: 52px; height: 52px; }
+      .charla-play svg { width: 22px; height: 22px; }
+      .charla-body { padding: 1.25rem 1rem; }
+      .charla-title { font-size: 1.05rem; margin-bottom: 0.4rem; }
+      .charla-desc { font-size: 0.9rem; margin-bottom: 1rem; }
+      .charla-card .btn {
+        min-height: 48px;
+        padding: 0.85rem 1rem;
+        font-size: 0.95rem;
+      }
+
+      /* Modal en móvil: tipo bottom sheet, fácil de cerrar */
+      .modal {
+        padding: 0;
+        align-items: flex-end;
+        padding-bottom: env(safe-area-inset-bottom);
+      }
+
+      .modal-box {
+        max-width: 100%;
+        width: 100%;
+        border-radius: 16px 16px 0 0;
+        max-height: 90vh;
+        max-height: 90dvh;
+      }
+
+      .modal-box video {
+        max-height: 78vh;
+        max-height: 78dvh;
+        object-fit: contain;
+      }
+
+      .modal-close {
+        top: auto;
+        bottom: 100%;
+        right: 1rem;
+        margin-bottom: 0.5rem;
+        width: 44px;
+        height: 44px;
+      }
+
+      footer {
+        padding: 2.5rem 1.25rem;
+        padding-bottom: calc(2.5rem + env(safe-area-inset-bottom));
+      }
+
+      .footer-icons a { width: 44px; height: 44px; min-width: 44px; min-height: 44px; }
+    }
+
+    @media (max-width: 480px) {
+      .hero { padding: 2.5rem 1rem 3rem; }
+      .hero h1 { font-size: 2rem; }
+      section { padding: 2rem 1rem; }
+      .charlas-grid { margin-left: 0; margin-right: 0; }
+      .charla-body { padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas-bg" aria-hidden="true"></canvas>
+  <div class="overlay" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <header>
+      <a href="#" class="logo">All4<span>Cyber</span></a>
+      <nav>
+        <a href="#que-es">Qué es</a>
+        <a href="#unete">Únete</a>
+        <a href="#charlas">Charlas</a>
+      </nav>
+    </header>
+
+    <!-- 1. HERO / PORTADA -->
+    <section class="hero">
+      <h1 class="reveal" data-reveal>All4Cyber</h1>
+      <p class="subtitle reveal" data-reveal>Comunidad Hispana de Ciberseguridad</p>
+      <p class="desc reveal" data-reveal>
+        Conectamos a profesionales y entusiastas. Conocimiento, herramientas y charlas en español.
+      </p>
+      <a href="#unete" class="btn reveal" data-reveal>Únete a Telegram</a>
+    </section>
+
+    <!-- 2. ¿QUÉ ES ALL4CYBER? -->
+    <section id="que-es" class="about">
+      <h2 class="sec-title reveal" data-reveal><span class="g">¿Qué es</span> All4Cyber?</h2>
+      <p class="sec-lead reveal" data-reveal>Una comunidad para crecer en ciberseguridad.</p>
+      <div class="about-content reveal" data-reveal>
+        <p>
+          <strong>All4Cyber</strong> es una comunidad de habla hispana dedicada a la ciberseguridad, donde compartimos conocimiento, herramientas, recursos, formación y charlas para ayudar a crecer profesionalmente en el sector.
+        </p>
+      </div>
+    </section>
+
+    <!-- 3. ÚNETE A LA COMUNIDAD -->
+    <section id="unete" class="join">
+      <h2 class="sec-title reveal" data-reveal>Únete a la <span class="g">comunidad</span></h2>
+      <p class="sec-lead reveal" data-reveal>Entra en Telegram y forma parte de All4Cyber.</p>
+      <a href="https://t.me/ENLACE_DEL_GRUPO" target="_blank" rel="noopener noreferrer" class="btn reveal" data-reveal>Entrar a Telegram</a>
+    </section>
+
+    <!-- 4. CHARLAS Y EVENTOS -->
+    <section id="charlas">
+      <h2 class="sec-title reveal" data-reveal><span class="g">Charlas</span> y Eventos</h2>
+      <p class="sec-lead reveal" data-reveal>Webinars y charlas en vivo de la comunidad.</p>
+      <div class="charlas-grid" id="charlasGrid"></div>
+    </section>
+
+    <!-- 5. FOOTER -->
+    <footer>
+      <p class="footer-text">© 2026 All4Cyber – Comunidad Hispana de Ciberseguridad</p>
+      <div class="footer-icons">
+        <a href="https://t.me/ENLACE_DEL_GRUPO" target="_blank" rel="noopener noreferrer" aria-label="Telegram"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg></a>
+        <a href="#" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+        <a href="#" target="_blank" rel="noopener noreferrer" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        <a href="#" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></a>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Modal reproductor (Ver charla → MP4) -->
+  <div class="modal" id="videoModal" aria-hidden="true">
+    <div class="modal-box">
+      <button type="button" class="modal-close" id="modalClose" aria-label="Cerrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+      <video id="modalVideo" controls preload="metadata" playsinline>
+        <source id="modalVideoSrc" src="" type="video/mp4">
+        Tu navegador no soporta vídeo.
+      </video>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      // ========== UTILIDADES ==========
+      function escapeHtml(str) {
+        if (!str) return '';
+        var div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+      }
+
+      function debounce(fn, ms) {
+        var t;
+        return function () {
+          var args = arguments;
+          clearTimeout(t);
+          t = setTimeout(function () { fn.apply(null, args); }, ms);
+        };
+      }
+
+      // ========== DATOS CHARLAS (añadir más aquí) ==========
+      // portada: imagen en carpeta portadas/ (ej. portadas/charla-1.jpg). Si no existe, se usa thumb como fallback.
+      var placeholderThumb = 'https://placehold.co/600x338/0c0e14/00ff88?text=Charla';
+      var charlas = [
+        { portada: 'portadas/charla-1.jpg', thumb: placeholderThumb, title: 'Introducción a la ciberseguridad', desc: 'Conceptos base y buenas prácticas para empezar.', video: 'videos/charla.mp4' },
+        { portada: 'portadas/charla-2.jpg', thumb: placeholderThumb, title: 'Pentesting y ethical hacking', desc: 'Metodologías y herramientas para pruebas de penetración.', video: 'videos/charla.mp4' },
+        { portada: 'portadas/charla-3.jpg', thumb: placeholderThumb, title: 'Seguridad en la nube', desc: 'Protección de entornos cloud y mejores prácticas.', video: 'videos/charla.mp4' }
+      ];
+
+      // ========== RENDER DINÁMICO CHARLAS ==========
+      function renderCharlas() {
+        var grid = document.getElementById('charlasGrid');
+        if (!grid) return;
+        var playSvg = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+        if (!charlas.length) {
+          grid.innerHTML = '<p class="sec-lead" style="margin:0;">Próximamente más charlas.</p>';
+          return;
+        }
+        grid.innerHTML = charlas.map(function (c, i) {
+          var portada = escapeHtml(c.portada || c.thumb || '');
+          var fallback = escapeHtml(c.thumb || placeholderThumb || '');
+          var title = escapeHtml(c.title || 'Charla');
+          var desc = escapeHtml(c.desc || '');
+          var video = escapeHtml(c.video || '');
+          return '<article class="charla-card reveal" data-reveal data-delay="' + i + '">' +
+            '<div class="charla-thumb-wrap">' +
+              '<img class="charla-thumb" src="' + portada + '" alt="Portada: ' + title + '" loading="lazy" decoding="async" onerror="this.onerror=null;this.src=\'' + fallback.replace(/'/g, "\\'") + '\'">' +
+              '<div class="charla-play" aria-hidden="true">' + playSvg + '</div>' +
+            '</div>' +
+            '<div class="charla-body">' +
+              '<h3 class="charla-title">' + title + '</h3>' +
+              '<p class="charla-desc">' + desc + '</p>' +
+              '<button type="button" class="btn btn-outline btn-ver-charla" data-video="' + video + '">Ver charla</button>' +
+            '</div></article>';
+        }).join('');
+        bindCharlaButtons(grid);
+      }
+
+      function bindCharlaButtons(container) {
+        if (!container) return;
+        container.addEventListener('click', function (e) {
+          var btn = e.target.closest('.btn-ver-charla');
+          if (!btn) return;
+          e.preventDefault();
+          var v = btn.getAttribute('data-video');
+          if (v) openVideo(v);
+        });
+      }
+
+      renderCharlas();
+
+      // ========== MODAL VÍDEO (con foco y teclado) ==========
+      var modal = document.getElementById('videoModal');
+      var modalVideo = document.getElementById('modalVideo');
+      var modalSrc = document.getElementById('modalVideoSrc');
+      var modalClose = document.getElementById('modalClose');
+      var focusBeforeModal = null;
+
+      function openVideo(src) {
+        if (!src || !modal || !modalVideo || !modalSrc) return;
+        focusBeforeModal = document.activeElement;
+        modalSrc.src = src;
+        modalVideo.load();
+        modal.classList.add('on');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
+        modalVideo.play().catch(function () {});
+        if (modalClose) modalClose.focus();
+        document.addEventListener('keydown', handleModalKeydown);
+      }
+
+      function closeVideo() {
+        if (!modal) return;
+        modal.classList.remove('on');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+        modalVideo.pause();
+        modalSrc.removeAttribute('src');
+        modalVideo.load();
+        document.removeEventListener('keydown', handleModalKeydown);
+        if (focusBeforeModal && typeof focusBeforeModal.focus === 'function') focusBeforeModal.focus();
+      }
+
+      function handleModalKeydown(e) {
+        if (e.key === 'Escape' && modal.classList.contains('on')) closeVideo();
+        if (e.key === 'Tab') trapModalFocus(e);
+      }
+
+      function trapModalFocus(e) {
+        if (!modal || !modal.contains(document.activeElement)) return;
+        var focusables = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        var first = focusables[0];
+        var last = focusables[focusables.length - 1];
+        if (e.shiftKey) {
+          if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+        } else {
+          if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+        }
+      }
+
+      if (modalClose) modalClose.addEventListener('click', closeVideo);
+      if (modal) modal.addEventListener('click', function (e) { if (e.target === modal) closeVideo(); });
+
+      // ========== FONDO PARTÍCULAS (optimizado, móvil, reducido) ==========
+      var canvas = document.getElementById('canvas-bg');
+      if (canvas) {
+        var ctx = canvas.getContext('2d');
+        var particles = [];
+        var rafId = null;
+        var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        function getParticleCount() {
+          if (reducedMotion) return 0;
+          var w = window.innerWidth;
+          if (w <= 480) return 25;
+          if (w <= 768) return 40;
+          return 65;
+        }
+
+        function resize() {
+          var w = window.innerWidth;
+          var h = window.innerHeight;
+          canvas.width = w;
+          canvas.height = h;
+          var count = getParticleCount();
+          particles.length = 0;
+          for (var i = 0; i < count; i++) {
+            particles.push({
+              x: Math.random() * w,
+              y: Math.random() * h,
+              r: Math.random() * 1.2 + 0.5,
+              vx: (Math.random() - 0.5) * 0.35,
+              vy: (Math.random() - 0.5) * 0.35
+            });
+          }
+        }
+
+        function draw() {
+          if (!ctx || !canvas.width || !particles.length) return;
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          for (var i = 0; i < particles.length; i++) {
+            var p = particles[i];
+            p.x += p.vx;
+            p.y += p.vy;
+            if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+            if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(0, 255, 136, 0.55)';
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = 'rgba(0, 255, 136, 0.5)';
+            ctx.fill();
+            ctx.shadowBlur = 0;
+          }
+          rafId = requestAnimationFrame(draw);
+        }
+
+        var debouncedResize = debounce(function () {
+          resize();
+          if (particles.length && !rafId) rafId = requestAnimationFrame(draw);
+        }, 150);
+
+        resize();
+        if (particles.length) rafId = requestAnimationFrame(draw);
+        window.addEventListener('resize', debouncedResize);
+        window.matchMedia('(prefers-reduced-motion: reduce)').addListener(function (e) {
+          reducedMotion = e.matches;
+          resize();
+        });
+      }
+
+      // ========== REVEAL AL SCROLL (Intersection Observer) ==========
+      function initReveal() {
+        var els = document.querySelectorAll('[data-reveal]');
+        if (!els.length) return;
+        var observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            var el = entry.target;
+            var delay = el.getAttribute('data-delay');
+            var t = delay ? parseInt(delay, 10) * 80 : 0;
+            setTimeout(function () {
+              el.classList.add('visible');
+              observer.unobserve(el);
+            }, t);
+          });
+        }, { root: null, rootMargin: '0px 0px -12% 0px', threshold: 0 });
+        els.forEach(function (el) { observer.observe(el); });
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initReveal);
+      } else {
+        initReveal();
+      }
+
+      // ========== SCROLL SUAVE CON OFFSET (header fijo) ==========
+      var headerOffset = 70;
+
+      document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+        var href = a.getAttribute('href');
+        if (href === '#') return;
+        a.addEventListener('click', function (e) {
+          var target = document.querySelector(href);
+          if (!target) return;
+          e.preventDefault();
+          var top = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+          window.scrollTo({ top: top, behavior: 'smooth' });
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
