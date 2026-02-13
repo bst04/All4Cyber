@@ -624,10 +624,11 @@
       // portada: imagen en carpeta portadas/ (ej. portadas/charla-1.jpg). Si no existe, se usa thumb como fallback.
       var placeholderThumb = 'https://placehold.co/600x338/0c0e14/00ff88?text=Charla';
       var charlas = [
-        { portada: 'portadas/charla-1.jpg', thumb: placeholderThumb, title: 'Introducción a la ciberseguridad', desc: 'Conceptos base y buenas prácticas para empezar.', video: 'videos/charla.mp4' },
-        { portada: 'portadas/charla-2.jpg', thumb: placeholderThumb, title: 'Pentesting y ethical hacking', desc: 'Metodologías y herramientas para pruebas de penetración.', video: 'videos/charla.mp4' },
-        { portada: 'portadas/charla-3.jpg', thumb: placeholderThumb, title: 'Seguridad en la nube', desc: 'Protección de entornos cloud y mejores prácticas.', video: 'videos/charla.mp4' }
+        { portada: 'portadas/charla-1.jpg', thumb: placeholderThumb, title: 'Introducción a la ciberseguridad', desc: 'Conceptos base y buenas prácticas para empezar.', video: 'https://drive.google.com/uc?export=download&id=1Ok2uIq0bWlHh1mznE0-sd1JAELECc406' },
+        { portada: 'portadas/charla-2.jpg', thumb: placeholderThumb, title: 'Proximamente', desc: 'Pronto lo sabremos.', video: 'https://drive.google.com/uc?export=download&id=ID_OTRA_CHARLA' },
+        { portada: 'portadas/charla-3.jpg', thumb: placeholderThumb, title: 'Proximamente', desc: 'Pronto lo sabremos.', video: 'https://drive.google.com/uc?export=download&id=ID_OTRA_CHARLA' }
       ];
+
 
       // ========== RENDER DINÁMICO CHARLAS ==========
       function renderCharlas() {
