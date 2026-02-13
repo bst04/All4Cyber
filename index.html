@@ -665,10 +665,12 @@
           var btn = e.target.closest('.btn-ver-charla');
           if (!btn) return;
           e.preventDefault();
-          var v = btn.getAttribute('data-video');
-          if (v) openVideo(v);
+          // Abrir el enlace de Google Drive en nueva pestaña
+          var urlDrive = "https://drive.google.com/file/d/1Ok2uIq0bWlHh1mznE0-sd1JAELECc406/view?usp=sharing";
+          window.open(urlDrive, "_blank", "noopener");
         });
       }
+
 
       renderCharlas();
 
